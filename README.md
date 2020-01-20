@@ -36,11 +36,3 @@ A dynamic resource management web-app which manages the working aws EC2 instance
 ```
    run.py
 ```
-
-Developed by:
-
-Liren (Fred) Pan,
-
-Yixiao (Felix) Hong,
-
-Hongzheng  (Chris) Xu.
