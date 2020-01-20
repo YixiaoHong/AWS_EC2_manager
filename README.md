@@ -1,14 +1,14 @@
 # aws_EC2_manager
 A dynamic resource management web-app which manages the working aws EC2 instances
 
-##Environment:
+## Environment:
 - Python 3.5 (or better)
 - A python virtual environment
 - Flask
 - Boto3 (AWS Python SDK)
 - AWS CLI 
 
-##Instruction
+## Instruction
 
 
 - Create a new python virtual environment as follows:
