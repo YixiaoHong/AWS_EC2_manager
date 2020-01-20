@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Auto Scaling</h1>
+<div>
+    <h3>Current CPU Util</h3>
+    <p>{{ util }}</p>
+</div>
+<div>
+    <h3 style="color: darkblue">AutoScaling is open: {{ isAutoScaling }}</h3>
+    <form action="/triggerAutoScaling" method="post">
+        <input type="submit" value="Trigger AutoScaling">
+    </form>
+</div>
+<div>
+    <h3>Adjust Data</h3>
+    <form action="/auto_scaling", method="post">
+        <p>CPU GROW<br/>
+            <input name='cpugrow' type="text" value="{{ cpugrow }}">
+        </p>
+        <p>CPU SHRINK<br/>
+            <input name='cpushrink' type="text" value="{{ cpushrink }}">
+        </p>
+        <p>RATIO GROW<br/>
+            <input name='ratiogrow' type="text" value="{{ ratiogrow }}">
+        </p>
+        <p>RATIO SHRINKW<br/>
+            <input name='ratioshrink' type="text" value="{{ ratioshrink }}">
+        </p>
+        <input type="submit" value="Apply">
+    </form>
+</div>
+
+
+{% endblock %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Auto Scaling</title>
+</head>
+<body>
+
+</body>
+</html>

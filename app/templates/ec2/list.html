@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <hr>
+
+    <h3 style="color: blue" >{{info_msg if info_msg != None}}</h3>
+    <h3 style="color: red" >{{error_msg if error_msg != None}}</h3>
+
+    <form action="{{url_for('ec2_create')}}" method="post" style="display: inline-block" >
+        <input type="submit" value="Add One More Worker" >
+    </form>
+
+    <form action="{{url_for('ec2_destroy_one')}}" method="post" style="display: inline-block">
+        <input type="submit" value="Destroy One Worker">
+    </form>
+
+    <form action="{{url_for('clear_database')}}" method="post" style="display: inline-block" onsubmit='return confirm("Are you sure?")'>
+    <input type="submit" value="Deleting All Application Data">
+    </form>
+
+    <form action="{{url_for('ec2_stop_all')}}" method="post" style="display: inline-block" onsubmit='return confirm("Are you sure?")'>
+        <input type="submit" value="Terminate All Workers and Stop Manager">
+    </form>
+
+
+    <hr>
+    <p>The address for the loadbalancer is: <a href="{{ lbdns }}">{{ lbdns }}</a></p>
+    <table>
+    <thead>
+       <th>ID</th>
+       <th>Name</th>
+       <th>Type</th>
+       <th>Availability Zone</th>
+       <th>Status</th>
+       <th>CPU Usage</th>
+       <th>HTTP Package Receiving Rate</th>
+       <th>DNS</th>
+       <th>Is registered in LB</th>
+       <th>Available Operation</th>
+    </thead> 
+    {% for instance in instances %}
+        <tr>
+            <td>{{ instance.id }}</td>
+            <td>{{ instancesName[instance.id] }}</td>
+            <td>{{ instance.instance_type }}</td>
+            <td>{{ instance.placement['AvailabilityZone']}}</td>
+            <td>{{ instance.state['Name'] }}</td>
+            <td><div id="cpu_{{ instance.id }}" style="width:300px;height:150px"></div></td>
+            <td><div id="http_{{ instance.id }}" style="width:300px;height:150px"></div></td>
+            <td>
+                {% if instance.dns!="Initializing" %}
+                    <a href="{{ instance.dns }}">{{ instance.dns }}</a>
+                {% else %}
+                    <span>Initializing</span>
+                {% endif %}
+            </td>
+            <td>{{ instance.isInlb }}</td>
+
+            <td>
+                <form action="{{url_for('ec2_destroy',id=instance.id)}}" method='post' onsubmit='return confirm("Are you sure?")'>
+                    <input type='submit' value='Destroy' />
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+
+    <div>
+        {% for string in logList %}
+            <p>{{ string }}</p>
+        {% endfor %}
+    </div>
+    <form action="/clean_log">
+        <input type="submit" value="Clear Log"/>
+    </form>
+
+
+        <script>
+
+        var options = {
+            series: {
+                lines: { show: true },
+                points: { show: true }
+            }
+        };
+
+        {% for instance in instances %}
+            $.plot($("#cpu_{{ instance.id }}"), [ {{ instancesPlotData[instance.id][0] }} ] , options);
+            $.plot($("#http_{{ instance.id }}"), [ {{ instancesPlotData[instance.id][1] }} ] , options);
+        {% endfor %}
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <hr>
+
+    <h3 style="color: blue" >{{info_msg if info_msg != None}}</h3>
+    <h3 style="color: red" >{{error_msg if error_msg != None}}</h3>
+
+    <table />
+    <thead>
+        <th>Name</th>
+        <th>Creation Time</th>
+        <th>Number of files Inside</th>
+        <th>Available Operations</th>
+    </thead>
+    {% for bucket in buckets %}
+        <tr>
+            <td>{{ bucket.name }}</td>
+            <td>{{ bucket.creation_date }}</td>
+            <td>{{ bucket_size_dict[bucket.name] }}</td>
+            <td>
+                <form action="{{url_for('s3_view',id=bucket.name)}}" method='get'>
+                    <input type='submit' value='Details' />
+                </form>
+                <form action="{{url_for('clean_one_bucket',id=bucket.name)}}" method='get'>
+                    <input type='submit' value='Clean Bucket' />
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
