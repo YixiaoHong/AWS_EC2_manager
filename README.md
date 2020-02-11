@@ -1,5 +1,5 @@
 # aws_EC2_manager
-A dynamic resource management web-app which manages the working aws EC2 instances
+A dynamic resource management web-app which manages the working aws EC2 instances.
 
 ## Environment:
 - Python 3.5 (or better)
